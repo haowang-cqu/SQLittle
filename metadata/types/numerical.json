@@ -1,0 +1,44 @@
+{
+  "TINYINT":{
+    "byte": 1,
+    "signed_range": [-128, 127],
+    "unsigned_range": [0,255],
+    "help": "小整数值"
+  },
+  "SMALLINT":{
+    "byte": 2,
+    "signed_range": [-32768, 32767],
+    "unsigned_range": [0, 65535],
+    "help": "大整数值"
+  },
+  "MEDIUMINT":{
+    "byte": 3,
+    "signed_range": [-8388608, 8388607],
+    "unsigned_range": [0, 16777215],
+    "help": "大整数值"
+  },
+  "INT":{
+    "byte": 4,
+    "signed_range": [-2147483648, 2147483647],
+    "unsigned_range": [0, 4294967295],
+    "help": "大整数值"
+  },
+  "BIGINT":{
+    "byte": 8,
+    "signed_range": [-9223372036854775808, 9223372036854775807],
+    "unsigned_range": [0, 18446744073709551615],
+    "help": "极大整数值"
+  },
+  "FLOAT":{
+    "byte": 4,
+    "signed_range": [-3.402823466E+38,-1.175494351E-38],
+    "unsigned_range": [1.175494351E-38, 3.402823466351E+38],
+    "help": "单精度浮点数值"
+  },
+  "DOUBLE":{
+    "byte": 8,
+    "signed_range": [-1.7976931348623157E+308, -2.2250738585072014E-308],
+    "unsigned_range": [2.2250738585072014E-308, 1.7976931348623157E+308],
+    "help": "双精度浮点数值"
+  }
+}
