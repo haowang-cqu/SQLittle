@@ -1,0 +1,1 @@
+{"dept_id": {"type": "INT", "constraints": {"check": "", "default": "", "primary": true, "unique": false, "not null": false}}, "dept_name": {"type": "TEXT", "constraints": {"check": "", "default": "", "primary": false, "unique": false, "not null": false}}}

@@ -1,0 +1,33 @@
+{
+    "s_id": {
+        "type": "INT",
+        "constraints": {
+            "check": "",
+            "default": "",
+            "primary": true,
+            "unique": false,
+            "not null": false
+        }
+    },
+    "s_name": {
+        "type": "TEXT",
+        "constraints": {
+            "check": "",
+            "default": "",
+            "primary": false,
+            "unique": false,
+            "not null": false
+        }
+    },
+    "s_dept": {
+        "type": "INT",
+        "constraints": {
+            "check": "",
+            "default": "",
+            "primary": false,
+            "foreign": "department(dept_id)",
+            "unique": false,
+            "not null": false
+        }
+    }
+}

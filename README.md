@@ -15,24 +15,40 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## 拟实现的命令
+## 实现的命令
 ### 查看所有表
 ```
 show tables;
 ```
+![show tables](img/show_tables.png)
 
 ### 查看数据类型
 ```
 show types;
 show [numerical, string, time] types;
 ```
+![show time types](img/show_time_types.png)
 
 ### 查看表信息
 ```
 describe [table name];
 ```
+![desc student](img/desc_student.png)
+
+### 创建表
+
 
 ### 删除表
 ```
 drop table [table name];
 ```
+
+### 修改表
+
+### 插入数据
+
+### 删除数据
+
+### 更新数据
+
+### 查询数据

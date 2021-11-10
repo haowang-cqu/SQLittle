@@ -35,6 +35,18 @@ def delete_table(table_name):
     os.remove(file_name)
 
 
+def show_table_fields(table_name):
+    field_items = mdb.get_table(table_name)['fields']
+    field_names = ['name'] + mdb.field_keys
+    fields = []
+    for k in field_items:
+        field = [k] + [field_items[k]["type"]]
+        field.extend([field_items[k]["constraints"].get(_, False) for _ in mdb.field_keys[1:-1]])
+        field.append(field_items[k].get("type_len", "None"))
+        fields.append(field)
+    return field_names, fields
+
+
 def show_table(table_name):
     field_items = mdb.get_table(table_name)['fields']
     field_names = ['name'] + mdb.field_keys
@@ -63,9 +75,8 @@ def show_type(type_name):
         _type.extend([type_items[k].get(_, False) for _ in type_col_names])
         types.append(_type)
 
-    type_indexes = [i for i in range(len(types))]
     type_col_names = ['name'] + type_col_names
-    return type_col_names, zip(types, type_indexes)
+    return type_col_names, types
 
 
 def add_record(table_name, record):
