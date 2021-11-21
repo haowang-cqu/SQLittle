@@ -36,19 +36,65 @@ describe [table name];
 ![desc student](img/desc_student.png)
 
 ### 创建表
+支持如下约束
+- PRIMARY KEY
+- UNIQUE
+- NOT NULL
+- FOREIGN KEY
 
+其中主码约束和外键约束必须写在后面，且外码约束不能指定名字或者级联删除等
+
+foreign key (CharID) references ChineseCharInfo(ID)
+```
+CREATE TABLE user(
+  id INT NOT NULL,
+  name VARCHAR NOT NULL UNIQUE,
+  password VARCHAR NOT NULL,
+  PRIMARY KEY (id)
+);
+```
+![create table](./img/create_table.png)
 
 ### 删除表
 ```
 drop table [table name];
 ```
+![drop table](./img/drop_table.png)
 
 ### 修改表
+(不打算实现了)
 
 ### 插入数据
+不支持指定字段和顺序，必须和创建表时的字段和顺序保持一致
+
+```
+INSERT INTO [table name] VALUES
+( value1, value2,...valueN ),
+( value1, value2,...valueN );
+```
+![insert into](./img/insert_into.png)
 
 ### 删除数据
+只支持单表、单条件删除，condition只支持>,<,=
+```
+DELETE FROM [table name] WHERE condition;
+```
+![delete](./img/delete.png)
 
 ### 更新数据
+只支持单表、单条件更新，condition只支持>,<,=
+```
+UPDATE [table name] 
+SET field1=value1, field2=value2 
+[WHERE condition];
+```
+![update](./img/update.png)
 
 ### 查询数据
+只支持单表、单条件查询，condition只支持>,<,=
+```
+SELECT column_name,column_name
+FROM [table name]
+[WHERE condition]
+```
+![select](./img/select.png)

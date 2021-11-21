@@ -12,12 +12,13 @@ def exists_table(table_name):
     return mdb.get_table(table_name) is not None
 
 
-def create_table(table_name, columns):
+def create_table(table_name, fields):
     if exists_table(table_name):
         print("Table '%s' exists!" % table_name)
     else:
         mdb.add_table(table_name)
-        df = pd.DataFrame(columns=columns)
+        mdb.modify_table(table_name, fields)
+        df = pd.DataFrame(columns=fields.keys())
         df.to_csv(database_loc+'%s.csv' % table_name, index=False)
 
 
@@ -49,21 +50,27 @@ def show_table_fields(table_name):
 
 def show_table(table_name):
     field_items = mdb.get_table(table_name)['fields']
-    field_names = ['name'] + mdb.field_keys
     fields = []
     for k in field_items:
         field = [k] + [field_items[k]["type"]]
         field.extend([field_items[k]["constraints"].get(_, False) for _ in mdb.field_keys[1:-1]])
         field.append(field_items[k].get("type_len", "None"))
         fields.append(field)
-    field_indexes = [i for i in range(len(fields))]
 
     record_name = database_loc + table_name + '.csv'
     df = pd.read_csv(record_name)
-    column_names = df.columns
-    records = [row.to_list() for i, row in df.iterrows()]
-    record_indexes = df.index.to_list()
-    return field_names, zip(fields, field_indexes), column_names, zip(records, record_indexes)
+    column_names = list(df.columns)
+    records = [row.to_list() for _, row in df.iterrows()]
+    return column_names, records
+
+
+def is_valid_type(type_name):
+    types = get_all_types()
+    for type in types:
+        type_items = mdb.get_type(type)['types']
+        if type_name in type_items.keys():
+            return True
+    return False
 
 
 def show_type(type_name):
@@ -110,48 +117,15 @@ def edit_record(table_name, index, record):
 # 单条件查询
 def query_records_by_condition(total_records, query_column, comparison_op, value):
     result_records = []
-    for record in total_records:
+    result_index = []
+    for i, record in enumerate(total_records):
         if comparison_op == '<' and str(record[query_column]) < value:
             result_records.append(record)
+            result_index.append(i)
         elif comparison_op == '=' and str(record[query_column]) == value:
             result_records.append(record)
+            result_index.append(i)
         elif comparison_op == '>' and str(record[query_column]) > value:
             result_records.append(record)
-    return result_records
-
-
-# 多条件查询
-def query_records(table_name, query_columns, comparison_ops, values):
-    query_columns = query_columns.split(',')
-    comparison_ops = comparison_ops.split(',')
-    values = values.split(',')
-    # 检查table是否存在
-    if not exists_table(table_name):
-        print("the table does not exist")
-        return
-    file_name = database_loc + table_name + '.csv'
-    df = pd.read_csv(file_name)
-    columns = df.columns
-    # 查询的列是否存在
-    for column in query_columns:
-        if column not in columns:
-            print("column does not exist")
-            return
-    # 比较符是否合法
-    for comparison_op in comparison_ops:
-        if comparison_op not in ['<', '=', '>']:
-            print("illegal comparison")
-            return
-    # 没一个查询需要对应
-    if len(query_columns) != len(comparison_ops) or \
-            len(query_columns) != len(values):
-        print("incorrect query format")
-        return
-    total_records = df.values.tolist()
-    columns = df.columns.tolist()
-    tables = get_all_tables()
-    # 多次查询
-    for i in range(len(query_columns)):
-        total_records = \
-            query_records_by_condition(total_records, columns.index(query_columns[i]), comparison_ops[i], values[i])
-    return [tables, columns, total_records]
+            result_index.append(i)
+    return result_records, result_index
