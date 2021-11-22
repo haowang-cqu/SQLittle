@@ -219,3 +219,28 @@ def update_command_parse(command: str) -> Tuple[bool, str, Dict[str, str], Tuple
     if _where == None:
         return True, table_name, update_fields, None
     return True, table_name, update_fields, where_parse(_where)
+
+def alter_add_proc(column:str,datatype:str):
+    field={}
+    field_property = {
+        "type": datatype.upper(),
+        "constraints": {
+            "check": "",
+            "default": "",
+            "primary": False,
+            "unique": False,
+            "not null": False
+        }
+    }
+    field[column]= field_property
+    return field
+    
+
+def alter_command_parse(command: str) -> Tuple[bool, str,str, Dict[str, Dict]]:
+    words=command.split()
+    fileds={}
+    if len(words)==6:
+        if words[0] == "alter" and words[3] == "add":
+            fileds = alter_add_proc(words[-2],words[-1])
+            return True, words[2],"add",fileds
+    return False,None,None, None

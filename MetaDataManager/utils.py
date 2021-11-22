@@ -129,3 +129,13 @@ def query_records_by_condition(total_records, query_column, comparison_op, value
             result_records.append(record)
             result_index.append(i)
     return result_records, result_index
+
+def add_column(table_name, column_name,fields) -> bool:
+    file_name = database_loc + table_name + '.csv'
+    df = pd.read_csv(file_name)
+    if column_name in list(df.columns.values):
+        return False
+    df[column_name] = ''
+    df.to_csv(file_name, index=False)
+    mdb.modify_table(table_name,fields)
+    return True
