@@ -62,7 +62,17 @@ drop table [table name];
 ![drop table](./img/drop_table.png)
 
 ### 修改表
-(不打算实现了)
+添加字段
+```
+ALTER TABLE [table name] ADD [field name] [field type];
+```
+![ALTER　ADD](./img/alter_add.png)
+
+删除字段
+```
+ALTER TABLE [table name] DROP COLUMNS [field name];
+```
+![ALTER　DROP](./img/alter_drop.png)
 
 ### 插入数据
 不支持指定字段和顺序，必须和创建表时的字段和顺序保持一致

@@ -91,6 +91,20 @@ class MetaDatabase(object):
         filenames.pop(table_name)
         save_dict2json(filenames,self.tables_filename)
         self.reload()
+    
+    def add_column(self, table_name, fields):
+        file_name_for_table = self.tables[table_name]['filename']
+        old_data=load_json2dict(table_loc + file_name_for_table)
+        old_data.update(fields)
+        save_dict2json(old_data,table_loc + file_name_for_table)
+        self.reload()
+
+    def drop_column(self, table_name,column_name):
+        file_name_for_table = self.tables[table_name]['filename']
+        old_data=load_json2dict(table_loc + file_name_for_table)
+        old_data.pop(column_name)
+        save_dict2json(old_data,table_loc + file_name_for_table)
+        self.reload()
 
 
 if __name__ == '__main__':

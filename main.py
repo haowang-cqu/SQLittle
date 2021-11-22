@@ -85,7 +85,7 @@ def insert_command_handler(command: str) -> bool:
     success, table_name, values = sqlparse.insert_command_parse(command)
     if not success:
         return False
-    if table_name not in utils.get_all_tables():
+    if not utils.exists_table(table_name):
         print(f"ERROR: Unknown table '{ table_name }'")
     else:
         for value in values:
@@ -219,6 +219,7 @@ def update_command_handler(command: str) -> bool:
     print()
     return True
 
+
 def alter_command_handler(command: str) -> bool:
     success, table_name,operation,fields = sqlparse.alter_command_parse(command)
     if not success:
@@ -230,7 +231,15 @@ def alter_command_handler(command: str) -> bool:
         else:
             print(f"ERROR: Already exit '{ column }'")
             return True
+    elif operation == "drop":
+        column=list(fields)[0]
+        if utils.drop_column(table_name,column):
+            return True
+        else:
+            print(f"ERROR: Dosen't exit '{ column }'")
+            return True
     return True
+
 
 def command_handler(command: str) -> bool:
     """处理各种类型的命令

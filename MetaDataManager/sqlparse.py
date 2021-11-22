@@ -16,6 +16,8 @@ def insert_command_parse(command: str) -> Tuple[bool, str, Tuple]:
     table_name = words[2]
     try:
         values = eval(command.split("values", 1)[1])
+        if type(values) == tuple and type(values[0]) != tuple:
+            values = tuple([values])
     except Exception as e:
         return False, None, None
     if len(values) == 0:
@@ -220,6 +222,7 @@ def update_command_parse(command: str) -> Tuple[bool, str, Dict[str, str], Tuple
         return True, table_name, update_fields, None
     return True, table_name, update_fields, where_parse(_where)
 
+
 def alter_add_proc(column:str,datatype:str):
     field={}
     field_property = {
@@ -234,7 +237,13 @@ def alter_add_proc(column:str,datatype:str):
     }
     field[column]= field_property
     return field
-    
+
+
+def alter_drop_proc(column:str):
+    field={}
+    field[column]= None
+    return field
+
 
 def alter_command_parse(command: str) -> Tuple[bool, str,str, Dict[str, Dict]]:
     words=command.split()
@@ -243,4 +252,7 @@ def alter_command_parse(command: str) -> Tuple[bool, str,str, Dict[str, Dict]]:
         if words[0] == "alter" and words[3] == "add":
             fileds = alter_add_proc(words[-2],words[-1])
             return True, words[2],"add",fileds
+        elif words[0] == "alter" and words[3] == "drop":
+            fileds = alter_drop_proc(words[-1])
+            return True, words[2],"drop",fileds
     return False,None,None, None

@@ -1,3 +1,4 @@
+from re import T
 import pandas as pd
 import numpy as np
 import os
@@ -130,6 +131,7 @@ def query_records_by_condition(total_records, query_column, comparison_op, value
             result_index.append(i)
     return result_records, result_index
 
+
 def add_column(table_name, column_name,fields) -> bool:
     file_name = database_loc + table_name + '.csv'
     df = pd.read_csv(file_name)
@@ -137,5 +139,16 @@ def add_column(table_name, column_name,fields) -> bool:
         return False
     df[column_name] = ''
     df.to_csv(file_name, index=False)
-    mdb.modify_table(table_name,fields)
+    mdb.add_column(table_name,fields)
+    return True
+
+
+def drop_column(table_name, column_name) -> bool:
+    file_name = database_loc + table_name + '.csv'
+    df = pd.read_csv(file_name)
+    if column_name not in list(df.columns.values):
+        return False
+    df.drop(column_name, axis=1, inplace=True)
+    df.to_csv(file_name, index=False)
+    mdb.drop_column(table_name,column_name)
     return True
